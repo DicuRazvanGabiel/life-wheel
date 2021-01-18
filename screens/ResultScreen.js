@@ -2,7 +2,8 @@ import { View, Dimensions } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import React from "react";
 import { PieChart } from "react-native-chart-kit";
-import { Icon } from "react-native-elements";
+import { Icon, Text } from "react-native-elements";
+import Firebase from "../Firebase";
 
 const categoryColors = {
     Bani: "#00C9A7",
@@ -15,7 +16,7 @@ const categoryColors = {
 
 export default function ResultScreen({ route, navigation }) {
     const { questions } = route.params;
-
+    const db = Firebase.firestore();
     const computeData = (questions) => {
         let data = {};
         let chartData = [];
@@ -42,6 +43,11 @@ export default function ResultScreen({ route, navigation }) {
         return chartData;
     };
 
+    db.collection("history").add({
+        questions,
+        created: Firebase.firestore.Timestamp.now(),
+    });
+
     return (
         <View style={{ backgroundColor: "white", flex: 1 }}>
             <View
@@ -50,6 +56,10 @@ export default function ResultScreen({ route, navigation }) {
                     backgroundColor: "white",
                 }}
             />
+            <View style={{ width: "100%", alignItems: "center" }}>
+                <Text h3>Roata vietii</Text>
+            </View>
+
             <PieChart
                 data={computeData(questions)}
                 width={Dimensions.get("window").width}

@@ -1,8 +1,10 @@
 import React from "react";
-import { StyleSheet, View, Dimensions, TextInput } from "react-native";
+import { StyleSheet, View, Dimensions } from "react-native";
 import { getStatusBarHeight } from "react-native-status-bar-height";
 import { Text, Button } from "react-native-elements";
 import Carousel from "react-native-snap-carousel";
+
+import Firebase from "../Firebase";
 
 const questionsTemplate = [
     {
@@ -102,6 +104,8 @@ function QuestionsScreen({ navigation }) {
     const [questionsState, setQuestionsState] = React.useState(
         questionsTemplate
     );
+
+    const db = Firebase.firestore();
 
     const handleOnNext = () => {
         let questions = [...questionsState];
